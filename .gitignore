@@ -1,6 +1,0 @@
-.gitignore
-.idea
-media
-*.pyc
-*.sw*
-*.sqlite
