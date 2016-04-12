@@ -1,7 +1,7 @@
-from task.models import Task
+from task.models import Task, Tag
 from task.permissions import IsOwnerOrReadOnly
 from django.contrib.auth.models import User
-from task.serializers import TaskSerializer, UserSerializer
+from task.serializers import TaskSerializer, UserSerializer, TagSerializer
 from rest_framework import generics, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -46,6 +46,16 @@ class UserList(generics.ListAPIView):
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class TagList(generics.ListAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
+
+class TagDetail(generics.RetrieveAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
 
 
 class APIRoot(APIView):
