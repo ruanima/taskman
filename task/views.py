@@ -10,6 +10,8 @@ from rest_framework.reverse import reverse
 
 class TaskList(generics.ListCreateAPIView):
     serializer_class = TaskSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly)  # need to del after test
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -20,10 +22,13 @@ class TaskList(generics.ListCreateAPIView):
         for the currently authenticated user.
         """
         user = self.request.user.is_authenticated() and self.request.user or None
-        return Task.objects.filter(owner=user)
+        # return Task.objects.filter(owner=user)
+        return Task.objects.all()
 
 class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TaskSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly)
 
     def get_queryset(self):
         """
@@ -31,7 +36,8 @@ class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
         for the currently authenticated user.
         """
         user = self.request.user.is_authenticated() and self.request.user or None
-        return Task.objects.filter(owner=user)
+        # return Task.objects.filter(owner=user)
+        return Task.objects.all()
 
 
 class UserList(generics.ListAPIView):
