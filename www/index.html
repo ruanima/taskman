@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load staticfiles %}
     <meta charset="utf-8">
     <title>TaskMan</title>
-    <script type="text/javascript" src="js/main.js"></script>
 </head>
 <body>
-
+<h1>Task Manage</h1>
+    <script id="personTemplate" type="text/template">
+        <strong><%= name %></strong> (<%= age %>) - <%= occupation %>
+    </script>
+    <script src="{% static "js/underscore.js" %}"></script>
+    <script src="{% static "js/jquery.js" %}"></script>
+    <script src="{% static "js/backbone.js" %}"></script>
+    <script src="{% static "js/main.js" %}"></script>
 </body>
 </html>

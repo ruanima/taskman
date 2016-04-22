@@ -57,7 +57,9 @@ ROOT_URLCONF = 'taskman.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'www'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -105,7 +107,12 @@ TIME_FORMAT = 'H:i:s'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/www/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "www"),
+    # '/var/www/static/',
+)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
