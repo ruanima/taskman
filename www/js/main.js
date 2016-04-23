@@ -35,12 +35,50 @@ App.Collections.People = Backbone.Collection.extend({
 });
 
 
+App.Views.People = Backbone.View.extend({
+    tagName: 'ul',
+    initialize: function(){
+        this.collection.on('add', this.addOne, this);
+    },
+    render: function(){
+        this.collection.each(this.addOne, this);
+        return this;
+    },
+    addOne: function(person){
+        var personView = new App.Views.Person({model: person});
+        this.$el.append(personView.render().el);
+    }
+});
+
+
 App.Views.Person = Backbone.View.extend({
     tagName: 'li',
     // className: 'person',
     // id: 'person-id',
 
     template: template('personTemplate'),
+
+    initialize: function(){
+        this.model.on('change', this.render, this);
+    },
+
+    events: {
+        'click .edit': 'editPerson',
+        'click .delete': 'DestroyPerson',
+    },
+
+    editPerson: function(){
+        var newName = prompt("Please enter the new name", this.model.get('name'));
+        this.model.set('name', newName);
+    },
+
+    DestroyPerson: function(){
+        this.model.destroy();
+    },
+
+    remove: function(){
+        this.$el.remove();
+    },
 
     render: function(){
         this.$el.html( this.template(this.model.toJSON()));
@@ -49,18 +87,18 @@ App.Views.Person = Backbone.View.extend({
 });
 
 
-App.Views.People = Backbone.View.extend({
-    tagName: 'ul',
-    render: function(){
-        this.collection.each(function(person){
-            var personView = new App.Views.Person({model: person});
-            this.$el.append(personView.render().el);
-        }, this);
-        return this;
+App.Views.AddPerson = Backbone.View.extend({
+    el: '#addPerson',
+    events: {
+        'submit': 'submit'
+    },
+    submit: function(e){
+        e.preventDefault();
+        var newPersonName = $(e.currentTarget).find('input[type=text]').val();
+        var person = new App.Models.Person({name: newPersonName});
+        this.collection.add(person);
     }
 });
-
-
 
 
 var peopleCollection = new App.Collections.People([
@@ -80,7 +118,7 @@ var peopleCollection = new App.Collections.People([
     }
 ]);
 
-
+var addPersonView =  new App.Views.AddPerson({collection: peopleCollection});
 var peopleView = new App.Views.People({ collection: peopleCollection });
 $(document.body).append(peopleView.render().el);
 })();

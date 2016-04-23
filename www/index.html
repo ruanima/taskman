@@ -6,9 +6,15 @@
     <title>TaskMan</title>
 </head>
 <body>
-<h1>Task Manage</h1>
+<h1>Task Manager</h1>
+    <form id="addPerson" action="">
+        <input type="text" placeholder="Name of person">
+        <input type="submit" value="Add Person">
+    </form>
     <script id="personTemplate" type="text/template">
         <strong><%= name %></strong> (<%= age %>) - <%= occupation %>
+        <button class="edit">Edit</button>
+        <button class="delete">Delete</button>
     </script>
     <script src="{% static "js/underscore.js" %}"></script>
     <script src="{% static "js/jquery.js" %}"></script>
