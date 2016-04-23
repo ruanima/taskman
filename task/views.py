@@ -51,11 +51,15 @@ class UserDetail(generics.RetrieveAPIView):
 
 
 class TagList(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                      IsOwnerOrReadOnly)  # need to del after test
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
 
 class TagDetail(generics.RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                      IsOwnerOrReadOnly)  # need to del after test
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 

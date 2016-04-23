@@ -2,7 +2,8 @@
 window.App = {
     Models: {},
     Collections: {},
-    Views: {}
+    Views: {},
+    Router: {},
 };
 
 window.template = function(id) {
@@ -101,6 +102,19 @@ App.Views.AddPerson = Backbone.View.extend({
 });
 
 
+App.Router = Backbone.Router.extend({
+    routes: {
+        '': 'index',
+        'show/:id': 'show'
+    },
+    index: function(){
+        $(document.body).append("Index route has ben called..");
+    },
+    show: function(id){
+        $(document.body).append("Show route has ben called.. with id equals:"+id);
+    },
+});
+
 var peopleCollection = new App.Collections.People([
     {
         name: 'Mohit Jain',
@@ -117,7 +131,8 @@ var peopleCollection = new App.Collections.People([
         occupation: 'Java Developer'
     }
 ]);
-
+new App.Router;
+Backbone.history.start();
 var addPersonView =  new App.Views.AddPerson({collection: peopleCollection});
 var peopleView = new App.Views.People({ collection: peopleCollection });
 $(document.body).append(peopleView.render().el);
