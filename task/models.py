@@ -33,7 +33,7 @@ class Task(models.Model):
     owner = models.ForeignKey(User, verbose_name='所有人')
     agent = models.ForeignKey(User, verbose_name='代理人', null=True, blank=True, related_name='external_task')
     detail = models.TextField('描述', null=True, blank=True)
-    tag = models.ManyToManyField(Tag, db_table='task_tag_map', verbose_name='标签', null=True, blank=True)
+    tag = models.ManyToManyField(Tag, db_table='task_tag_map', verbose_name='标签', blank=True)
     status = models.CharField('状态', choices=TASK_STATUS, max_length=2, default=1)
     stage = models.CharField('阶段', choices=TASK_STAGE, max_length=2, default=1)
     deadline = models.DateTimeField('截止时间', null=True, blank=True)
