@@ -10,8 +10,7 @@ from rest_framework.reverse import reverse
 
 class TaskList(generics.ListCreateAPIView):
     serializer_class = TaskSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnly)  # need to del after test
+    permission_classes = (permissions.AllowAny,)  # need to del after test
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -27,8 +26,7 @@ class TaskList(generics.ListCreateAPIView):
 
 class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TaskSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnly)
+    permission_classes = (permissions.AllowAny,)
 
     def get_queryset(self):
         """
@@ -41,34 +39,34 @@ class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class UserList(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)  # need to del after test
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class UserDetail(generics.RetrieveAPIView):
+    permission_classes = (permissions.AllowAny,)  # need to del after test
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class TagList(generics.ListAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                      IsOwnerOrReadOnly)  # need to del after test
+    permission_classes = (permissions.AllowAny,)  # need to del after test
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
 
 class TagDetail(generics.RetrieveAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                      IsOwnerOrReadOnly)  # need to del after test
+    permission_classes = (permissions.AllowAny,)  # need to del after test
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
 
 class APIRoot(APIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnly)
+    permission_classes = (permissions.AllowAny,)
     def get(self, request, format=None):
         return Response({
             'users': reverse('user-list', request=request, format=format),
             'tasks': reverse('task-list', request=request, format=format),
+            'tags': reverse('tag-list', request=request, format=format),
                         })

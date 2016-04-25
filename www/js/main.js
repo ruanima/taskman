@@ -1,80 +1,88 @@
-// (function(){
-// window.App = {
-//     Models: {},
-//     Collections: {},
-//     Views: {},
-//     Router: {},
-// };
+(function(){
+window.App = {
+    Models: {},
+    Collections: {},
+    Views: {},
+    Router: {},
+};
 
-// window.template = function(id) {
-//     return _.template( $('#' + id).html() );
-// };
-
-
-// App.Models.Tag = Backbone.Model.extend({
-//     defaults: {
-//     },
-//     validate: function(attrs, options){
-//     },
-//     urlRoot: '/api/tag'
-// });
+window.template = function(id) {
+    return _.template( $('#' + id).html() );
+};
 
 
-// App.Collections.People = Backbone.Collection.extend({
-//     model: App.Models.Person,
-// });
+App.Models.Task = Backbone.Model.extend({
+    defaults: {
+    },
+    validate: function(attrs, options){
+    },
+    urlRoot: '/api/tasks/',
+});
 
 
-// App.Views.People = Backbone.View.extend({
-//     tagName: 'ul',
-//     initialize: function(){
-//         this.collection.on('add', this.addOne, this);
-//     },
-//     render: function(){
-//         this.collection.each(this.addOne, this);
-//         return this;
-//     },
-//     addOne: function(person){
-//         var personView = new App.Views.Person({model: person});
-//         this.$el.append(personView.render().el);
-//     }
-// });
+App.Collections.TaskSet = Backbone.Collection.extend({
+    model: App.Models.Task,
+    url: '/api/tasks/',
+});
 
 
-// App.Views.Person = Backbone.View.extend({
-//     tagName: 'li',
-//     // className: 'person',
-//     // id: 'person-id',
+App.Views.TaskSet = Backbone.View.extend({
+    tagName: 'ul',
+    initialize: function(){
+        this.collection.on('add', this.addOne, this);
+    },
+    render: function(){
+        this.collection.each(this.addOne, this);
+        return this;
+    },
+    addOne: function(task){
+        var taskView = new App.Views.Task({model: task});
+        this.$el.append(taskView.render().el);
+    }
+});
 
-//     template: template('personTemplate'),
 
-//     initialize: function(){
-//         this.model.on('change', this.render, this);
-//     },
+App.Views.Task = Backbone.View.extend({
+    tagName: 'li',
 
-//     events: {
-//         'click .edit': 'editPerson',
-//         'click .delete': 'DestroyPerson',
-//     },
+    template: template('item-Template'),
 
-//     editPerson: function(){
-//         var newName = prompt("Please enter the new name", this.model.get('name'));
-//         this.model.set('name', newName);
-//     },
+    events: {
+        // 'click .toggle': 'toggleCompleted',
+        // 'dblclick label': 'edit',
+        // 'click .destroy': 'clear',
+        // 'keypress .edit': 'updateOnEnter',
+        // 'keydown .edit': 'revertOnEscape',
+        // 'blur .edit': 'close'
+    },
 
-//     DestroyPerson: function(){
-//         this.model.destroy();
-//     },
+    initialize: function(){
+        this.model.on('change', this.render, this);
+    },
 
-//     remove: function(){
-//         this.$el.remove();
-//     },
+    // events: {
+    //     'click .edit': 'editPerson',
+    //     'click .delete': 'DestroyPerson',
+    // },
 
-//     render: function(){
-//         this.$el.html( this.template(this.model.toJSON()));
-//         return this;
-//     },
-// });
+    // editPerson: function(){
+    //     var newName = prompt("Please enter the new name", this.model.get('name'));
+    //     this.model.set('name', newName);
+    // },
+
+    // DestroyPerson: function(){
+    //     this.model.destroy();
+    // },
+
+    // remove: function(){
+    //     this.$el.remove();
+    // },
+
+    render: function(){
+        this.$el.html( this.template(this.model.toJSON()));
+        return this;
+    },
+});
 
 
 // App.Views.AddPerson = Backbone.View.extend({
@@ -91,18 +99,18 @@
 // });
 
 
-// App.Router = Backbone.Router.extend({
-//     routes: {
-//         '': 'index',
-//         'show/:id': 'show'
-//     },
-//     index: function(){
-//         $(document.body).append("Index route has ben called..");
-//     },
-//     show: function(id){
-//         $(document.body).append("Show route has ben called.. with id equals:"+id);
-//     },
-// });
+App.Router = Backbone.Router.extend({
+    routes: {
+        '': 'index',
+        'task/:id': 'task'
+    },
+    index: function(){
+        $(document.body).append("Index route has ben called..");
+    },
+    task: function(id){
+        $(document.body).append("Task route has ben called.. with id equals:"+id);
+    },
+});
 
 // var peopleCollection = new App.Collections.People([
 //     {
@@ -120,9 +128,16 @@
 //         occupation: 'Java Developer'
 //     }
 // ]);
-// new App.Router;
-// Backbone.history.start();
-// var addPersonView =  new App.Views.AddPerson({collection: peopleCollection});
-// var peopleView = new App.Views.People({ collection: peopleCollection });
+
+// var oldSync = Backbone.sync;
+// Backbone.sync = function(method, model, options){
+//   options.beforeSend = function(xhr){
+//     xhr.setRequestHeader('X-CSRFToken', CSRF_TOKEN);
+//   };
+//   return oldSync(method, model, options);
+// };
+
+new App.Router;
+Backbone.history.start();
 // $(document.body).append(peopleView.render().el);
-// })();
+})();

@@ -124,5 +124,5 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissions',
     ],
-    'PAGE_SIZE': 5,
+    # 'PAGE_SIZE': 5,
 }

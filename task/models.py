@@ -38,7 +38,7 @@ class Task(models.Model):
     stage = models.CharField('阶段', choices=TASK_STAGE, max_length=2, default=1)
     deadline = models.DateTimeField('截止时间', null=True, blank=True)
     estimate  = models.TimeField('预估时间', null=True, blank=True)
-    upper_task = models.ForeignKey('Task', verbose_name='上一级任务', null=True, blank=True)
+    upper_task = models.ForeignKey('Task', verbose_name='上一级任务', null=True, blank=True, )
     created_time = models.DateTimeField('创建时间', auto_now_add=True)
     last_modified = models.DateTimeField('最近更新时间', auto_now=True)
 
