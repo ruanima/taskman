@@ -131,5 +131,5 @@ new App.Router;
 Backbone.history.start();
 var addTaskView =  new App.Views.AddTask({collection: taskCollection});
 var taskCollectionView = new App.Views.TaskCollection({ collection: taskCollection });
-$(document.body).append(taskCollectionView.render().el);
+$('#center-view').append(taskCollectionView.render().el);
 })();

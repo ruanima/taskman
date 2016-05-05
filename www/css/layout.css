@@ -1,0 +1,41 @@
+section, header, article, nav {
+    display:block;
+}
+* {
+    padding:0;
+    margin:0;
+}
+body {
+    margin:1em10%;
+    /*background-image:url(../images/background.png);*/
+    background-attachment:fixed;
+    background-position:topleft;
+    background-repeat:repeat-x;
+    max-width:80em;
+}
+
+.container {
+    width: 100%;
+}
+
+#left-view, #right-view {
+    width:200px;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    padding:20px;
+}
+
+
+#center-view {
+    padding:20px;
+    -webkit-box-flex:1;
+    -moz-box-flex:1;
+    -webkit-box-ordinal-group:2;
+    -moz-box-ordinal-group:2;
+    margin:0 5px;
+}
+
+#right-view{
+    -webkit-box-ordinal-group:2;
+    -moz-box-ordinal-group:2;
+}

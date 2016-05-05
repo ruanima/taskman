@@ -1,24 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load staticfiles %}
-    <meta charset="utf-8">
-    <title>TaskMan</title>
+	{% load staticfiles %}
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="{% static "css/layout.css"%}">
+	<title>TaskMan</title>
 </head>
 <body>
-<h1>Task Manager</h1>
-    <form id="addTask" action="">
-        <input type="text" placeholder="Title of title">
-        <input type="submit" value="Add Task">
-    </form>
-    <script id="taskTemplate" type="text/template">
-        <strong><%= title %></strong> (<%= stage %>) - <%= status %>
-        <button class="edit">Edit</button>
-        <button class="delete">Delete</button>
-    </script>
-    <script src="{% static "js/underscore.js" %}"></script>
-    <script src="{% static "js/jquery.js" %}"></script>
-    <script src="{% static "js/backbone.js" %}"></script>
-    <script src="{% static "js/main.js" %}"></script>
+<section>
+	<div class="container">
+		<div id="left-view">
+		</div>
+		<div id="center-view">
+			<h1>Task Manager</h1>
+			<form id="addTask" action="">
+				<input type="text" placeholder="Title of title">
+				<input type="submit" value="Add Task">
+			</form>
+		</div>
+		<div id="right-view">
+		</div>
+	</div>
+</section>
+<footer>
+	<script id="taskTemplate" type="text/template">
+		<strong><%= title %></strong> (<%= stage %>) - <%= status %>
+		<button class="edit">Edit</button>
+		<button class="delete">Delete</button>
+	</script>
+	<script src="{% static "js/underscore.js" %}"></script>
+	<script src="{% static "js/jquery.js" %}"></script>
+	<script src="{% static "js/backbone.js" %}"></script>
+	<script src="{% static "js/main.js" %}"></script>
+</footer>
 </body>
 </html>
