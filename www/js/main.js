@@ -13,20 +13,32 @@ window.template = function(id) {
 
 App.Models.Task = Backbone.Model.extend({
     defaults: {
+        stage: '1',
+        status: '1',
+        owner: '1',
     },
-    validate: function(attrs, options){
-    },
+    // validate: function(attrs, options){
+    //     if (attrs.age < 0){
+    //         return 'Age must be positive.';
+    //     }
+    //     if (!attrs.name){
+    //         return 'Everyone must have a name.';
+    //     }
+    // },
+    // work: function(){
+    //     return this.get('name') + 'is working.';
+    // },
     urlRoot: '/api/tasks/',
 });
 
 
-App.Collections.TaskSet = Backbone.Collection.extend({
+App.Collections.TaskCollection = Backbone.Collection.extend({
     model: App.Models.Task,
     url: '/api/tasks/',
 });
 
 
-App.Views.TaskSet = Backbone.View.extend({
+App.Views.TaskCollection = Backbone.View.extend({
     tagName: 'ul',
     initialize: function(){
         this.collection.on('add', this.addOne, this);
@@ -44,39 +56,36 @@ App.Views.TaskSet = Backbone.View.extend({
 
 App.Views.Task = Backbone.View.extend({
     tagName: 'li',
+    // className: 'person',
+    // id: 'person-id',
 
-    template: template('item-Template'),
-
-    events: {
-        // 'click .toggle': 'toggleCompleted',
-        // 'dblclick label': 'edit',
-        // 'click .destroy': 'clear',
-        // 'keypress .edit': 'updateOnEnter',
-        // 'keydown .edit': 'revertOnEscape',
-        // 'blur .edit': 'close'
-    },
+    template: template('taskTemplate'),
 
     initialize: function(){
         this.model.on('change', this.render, this);
     },
 
-    // events: {
-    //     'click .edit': 'editPerson',
-    //     'click .delete': 'DestroyPerson',
-    // },
+    events: {
+        'click .edit': 'editPerson',
+        'click .delete': 'DestroyPerson',
+    },
 
-    // editPerson: function(){
-    //     var newName = prompt("Please enter the new name", this.model.get('name'));
-    //     this.model.set('name', newName);
-    // },
+    editPerson: function(){
+        var newTitle = prompt("Please enter the new title", this.model.get('title'));
+        if (newTitle && newTitle!=this.model.get('title')){
+            this.model.set('title', newTitle);
+            this.model.save();
+        }
+    },
 
-    // DestroyPerson: function(){
-    //     this.model.destroy();
-    // },
+    DestroyPerson: function(){
+        this.model.destroy();
+        this.remove();
+    },
 
-    // remove: function(){
-    //     this.$el.remove();
-    // },
+    remove: function(){
+        this.$el.remove();
+    },
 
     render: function(){
         this.$el.html( this.template(this.model.toJSON()));
@@ -85,59 +94,42 @@ App.Views.Task = Backbone.View.extend({
 });
 
 
-// App.Views.AddPerson = Backbone.View.extend({
-//     el: '#addPerson',
-//     events: {
-//         'submit': 'submit'
-//     },
-//     submit: function(e){
-//         e.preventDefault();
-//         var newPersonName = $(e.currentTarget).find('input[type=text]').val();
-//         var person = new App.Models.Person({name: newPersonName});
-//         this.collection.add(person);
-//     }
-// });
+App.Views.AddTask = Backbone.View.extend({
+    el: '#addTask',
+    events: {
+        'submit': 'submit'
+    },
+    submit: function(e){
+        e.preventDefault();
+        var input = $(e.currentTarget).find('input[type=text]');
+        if (input.val().trim()){
+            var task = new App.Models.Task({title: input.val()});
+            task.save();
+            this.collection.add(task);
+            input.val('');
+        }
+    }
+});
 
 
 App.Router = Backbone.Router.extend({
     routes: {
         '': 'index',
-        'task/:id': 'task'
+        'show/:id': 'show'
     },
     index: function(){
-        $(document.body).append("Index route has ben called..");
+        // $(document.body).append("Index route has ben called..");
     },
-    task: function(id){
-        $(document.body).append("Task route has ben called.. with id equals:"+id);
+    show: function(id){
+        // $(document.body).append("Show route has ben called.. with id equals:"+id);
     },
 });
 
-// var peopleCollection = new App.Collections.People([
-//     {
-//         name: 'Mohit Jain',
-//         age: 26
-//     },
-//     {
-//         name: 'Taroon Tyagi',
-//         age: 25,
-//         occupation: 'web designer'
-//     },
-//     {
-//         name: 'Rahul Narang',
-//         age: 26,
-//         occupation: 'Java Developer'
-//     }
-// ]);
-
-// var oldSync = Backbone.sync;
-// Backbone.sync = function(method, model, options){
-//   options.beforeSend = function(xhr){
-//     xhr.setRequestHeader('X-CSRFToken', CSRF_TOKEN);
-//   };
-//   return oldSync(method, model, options);
-// };
-
+var taskCollection = new App.Collections.TaskCollection();
+taskCollection.fetch();
 new App.Router;
 Backbone.history.start();
-// $(document.body).append(peopleView.render().el);
+var addTaskView =  new App.Views.AddTask({collection: taskCollection});
+var taskCollectionView = new App.Views.TaskCollection({ collection: taskCollection });
+$(document.body).append(taskCollectionView.render().el);
 })();
