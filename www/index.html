@@ -1,37 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	{% load staticfiles %}
-	<meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="{% static "css/layout.css"%}">
-	<title>TaskMan</title>
+  {% load staticfiles %}
+  <meta charset="utf-8">
+  <style>
+    html::-webkit-scrollbar{display:none !important}
+    body::-webkit-scrollbar{display:none !important}
+  </style>
+  <link rel="stylesheet" type="text/css" href="{% static "css/basic.css"%}">
+  <title>TaskMan</title>
 </head>
 <body>
-<section>
-	<div class="container">
-		<div id="left-view">
-		</div>
-		<div id="center-view">
-			<h1>Task Manager</h1>
-			<form id="addTask" action="">
-				<input type="text" placeholder="Title of title">
-				<input type="submit" value="Add Task">
-			</form>
-		</div>
-		<div id="right-view">
-		</div>
-	</div>
-</section>
+<div id="container-main" class="container-fluid can-not-select">
+  <div class="row-fluid">
+    <div id="left-view" class="g-left">
+    </div>
+    <div id="center-view" class="g-center">
+      <div id="task-list-view" class="tasks ">
+        <div id="addTask" action="">
+          <h1>Task Manager</h1>
+          <input type="text" class="new-task" placeholder="What needs to be done?" autofocus>
+          <!-- <input type="submit" value="Add Task"> -->
+        </div>
+        <div id="task-list-body" class="tl-body">
+        </div>
+      </div>
+    </div>
+    <div id="right-view" class="g-right">
+    </div>
+  </div>
+</div>
 <footer>
-	<script id="taskTemplate" type="text/template">
-		<strong><%= title %></strong> (<%= stage %>) - <%= status %>
-		<button class="edit">Edit</button>
-		<button class="delete">Delete</button>
-	</script>
-	<script src="{% static "js/underscore.js" %}"></script>
-	<script src="{% static "js/jquery.js" %}"></script>
-	<script src="{% static "js/backbone.js" %}"></script>
-	<script src="{% static "js/main.js" %}"></script>
+  <script id="taskTemplate" type="text/template">
+    <strong><%= title %></strong> (<%= stage %>) - <%= status %>
+    <button class="edit">Edit</button>
+    <button class="delete">Delete</button>
+  </script>
+  <script src="{% static "js/underscore.js" %}"></script>
+  <script src="{% static "js/jquery.js" %}"></script>
+  <script src="{% static "js/backbone.js" %}"></script>
+  <script src="{% static "js/main.js" %}"></script>
 </footer>
 </body>
 </html>

@@ -6,6 +6,9 @@ window.App = {
     Router: {},
 };
 
+window.ENTER_KEY = 13;
+window.ESC_KEY = 27;
+
 window.template = function(id) {
     return _.template( $('#' + id).html() );
 };
@@ -56,8 +59,7 @@ App.Views.TaskCollection = Backbone.View.extend({
 
 App.Views.Task = Backbone.View.extend({
     tagName: 'li',
-    // className: 'person',
-    // id: 'person-id',
+    className: 'task-li',
 
     template: template('taskTemplate'),
 
@@ -97,7 +99,12 @@ App.Views.Task = Backbone.View.extend({
 App.Views.AddTask = Backbone.View.extend({
     el: '#addTask',
     events: {
-        'submit': 'submit'
+        'submit': 'submit',
+        // 'focus .new-task': 'selectOnFocus',
+        'keypress .new-task': 'createOnEnter',
+    },
+    initialize: function () {
+        this.$input = this.$('.new-task');
     },
     submit: function(e){
         e.preventDefault();
@@ -108,7 +115,27 @@ App.Views.AddTask = Backbone.View.extend({
             this.collection.add(task);
             input.val('');
         }
-    }
+    },
+    newAttributes: function () {
+        return {
+            title: this.$input.val().trim(),
+        };
+    },
+
+    // If you hit return in the main input field, create new **Todo** model,
+    // persisting it to *localStorage*.
+    createOnEnter: function (e) {
+        if (e.which === ENTER_KEY && this.$input.val().trim()) {
+            this.collection.create(this.newAttributes());
+            this.$input.val('');
+        }
+    },
+    selectOnFocus: function(e) {
+        var input = $('input.new-task');
+        if (input.val().trim()) {
+            input.select();
+        }
+    },
 });
 
 
@@ -131,5 +158,5 @@ new App.Router;
 Backbone.history.start();
 var addTaskView =  new App.Views.AddTask({collection: taskCollection});
 var taskCollectionView = new App.Views.TaskCollection({ collection: taskCollection });
-$('#center-view').append(taskCollectionView.render().el);
+$('#task-list-body').append(taskCollectionView.render().el);
 })();
